@@ -74,14 +74,21 @@ vim.opt.scrolloff = 10
 --  See `:help vim.keymap.set()`
 
 -- Miscellaneous, personal keymaps
-vim.keymap.set('i', 'jk', '<ESC>', { desc = 'Exit insert mode with jk' })
 vim.keymap.set('n', '<leader>ya', ':%y+<CR>', { desc = 'Copy entire file' })
+vim.keymap.set('i', 'jj', '<ESC>', { desc = 'Exit insert mode with jk' })
+-- This is how you set a keymap to a function
+-- vim.keymap.set('i', 'jk', function()
+-- print 'Hello Henri'
+-- end, { desc = 'Print hello Henri with jk' })
 
 -- Clear highlights on search when pressing <Esc> in normal mode
 --  See `:help hlsearch`
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 -- Diagnostic keymaps
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
+vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror message' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
