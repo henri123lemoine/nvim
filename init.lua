@@ -80,6 +80,8 @@ vim.keymap.set('i', 'jj', '<ESC>', { desc = 'Exit insert mode with jk' })
 -- vim.keymap.set('i', 'jk', function()
 -- print 'Hello Henri'
 -- end, { desc = 'Print hello Henri with jk' })
+vim.keymap.set('n', '<leader>+', '<C-a>', { desc = 'Increment number' }) -- increment
+vim.keymap.set('n', '<leader>-', '<C-x>', { desc = 'Decrement number' }) -- decrement
 
 -- Clear highlights on search when pressing <Esc> in normal mode
 --  See `:help hlsearch`
