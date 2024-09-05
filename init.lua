@@ -75,11 +75,6 @@ vim.opt.scrolloff = 10
 
 -- Miscellaneous, personal keymaps
 vim.keymap.set('n', '<leader>ya', ':%y+<CR>', { desc = 'Copy entire file' })
-vim.keymap.set('i', 'jj', '<ESC>', { desc = 'Exit insert mode with jk' })
--- This is how you set a keymap to a function
--- vim.keymap.set('i', 'jk', function()
--- print 'Hello Henri'
--- end, { desc = 'Print hello Henri with jk' })
 vim.keymap.set('n', '<leader>+', '<C-a>', { desc = 'Increment number' }) -- increment
 vim.keymap.set('n', '<leader>-', '<C-x>', { desc = 'Decrement number' }) -- decrement
 vim.keymap.set('n', '<leader>rs/', function()
