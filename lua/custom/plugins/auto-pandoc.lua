@@ -5,22 +5,22 @@ return {
   config = function()
     local auto_pandoc = require 'auto-pandoc'
 
-    -- Function to run the custom pandoc command with improved error reporting
+    -- Function to run the custom pandoc command with improved error reporting and space handling
     _G.RunCustomPandoc = function()
-      local input_file = vim.fn.expand '%:p'
-      local output_file = vim.fn.fnamemodify(input_file, ':r') .. '.pdf'
+      local input_file = vim.fn.shellescape(vim.fn.expand '%:p')
+      local output_file = vim.fn.shellescape(vim.fn.fnamemodify(vim.fn.expand '%:p', ':r') .. '.pdf')
       local cmd = string.format('pandoc %s -o %s --pdf-engine=xelatex', input_file, output_file)
 
       vim.fn.jobstart(cmd, {
         on_stdout = function(_, data)
-          if data then
+          if data and #data > 1 then
             vim.schedule(function()
               vim.notify(table.concat(data, '\n'), vim.log.levels.INFO)
             end)
           end
         end,
         on_stderr = function(_, data)
-          if data then
+          if data and #data > 1 then
             vim.schedule(function()
               vim.notify(table.concat(data, '\n'), vim.log.levels.ERROR)
             end)
@@ -29,7 +29,7 @@ return {
         on_exit = function(_, exit_code)
           if exit_code == 0 then
             vim.schedule(function()
-              vim.notify('PDF generated successfully: ' .. output_file, vim.log.levels.INFO)
+              vim.notify('PDF generated successfully: ' .. vim.fn.expand '%:r' .. '.pdf', vim.log.levels.INFO)
             end)
           else
             vim.schedule(function()
