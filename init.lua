@@ -858,6 +858,24 @@ require('lazy').setup({
       },
       indent = { enable = true, disable = { 'ruby' } },
     },
+    dependencies = {
+      {
+        'nvim-treesitter/nvim-treesitter-context',
+        config = function()
+          require('treesitter-context').setup {
+            enable = true,
+            max_lines = 0,
+            min_window_height = 0,
+            line_numbers = true,
+            multiline_threshold = 20,
+            trim_scope = 'outer',
+            mode = 'cursor',
+            separator = nil,
+            zindex = 20,
+          }
+        end,
+      },
+    },
     -- There are additional nvim-treesitter modules that you can use to interact
     -- with nvim-treesitter. You should go explore a few and see what interests you:
     --
