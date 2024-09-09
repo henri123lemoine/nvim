@@ -5,58 +5,53 @@ return {
   config = function()
     local auto_pandoc = require 'auto-pandoc'
 
-    -- Function to run the custom pandoc command with improved error reporting and space handling
-    _G.RunCustomPandoc = function()
-      local input_file = vim.fn.shellescape(vim.fn.expand '%:p')
-      local output_file = vim.fn.shellescape(vim.fn.fnamemodify(vim.fn.expand '%:p', ':r') .. '.pdf')
-      local cmd = string.format('pandoc %s -o %s --pdf-engine=xelatex', input_file, output_file)
-
-      vim.fn.jobstart(cmd, {
-        on_stdout = function(_, data)
-          if data and #data > 1 then
-            vim.schedule(function()
-              vim.notify(table.concat(data, '\n'), vim.log.levels.INFO)
-            end)
-          end
-        end,
-        on_stderr = function(_, data)
-          if data and #data > 1 then
-            vim.schedule(function()
-              vim.notify(table.concat(data, '\n'), vim.log.levels.ERROR)
-            end)
-          end
-        end,
-        on_exit = function(_, exit_code)
-          if exit_code == 0 then
-            vim.schedule(function()
-              vim.notify('PDF generated successfully: ' .. vim.fn.expand '%:r' .. '.pdf', vim.log.levels.INFO)
-            end)
-          else
-            vim.schedule(function()
-              vim.notify('Failed to generate PDF. Exit code: ' .. exit_code, vim.log.levels.ERROR)
-            end)
-          end
-        end,
-      })
+    -- Helper function to run shell commands
+    local function run_command(cmd)
+      local output = vim.fn.system(cmd)
+      if vim.v.shell_error ~= 0 then
+        vim.notify('Error: ' .. output, vim.log.levels.ERROR)
+      else
+        vim.notify('Success: ' .. cmd, vim.log.levels.INFO)
+      end
     end
 
-    -- Create an autocommand group
-    local augroup = vim.api.nvim_create_augroup('AutoPandoc', { clear = true })
+    -- Function to generate PDF
+    local function generate_pdf()
+      local input = vim.fn.shellescape(vim.fn.expand '%:p')
+      local output = vim.fn.shellescape(vim.fn.expand '%:p:r' .. '.pdf')
+      run_command(string.format('pandoc %s -o %s --pdf-engine=xelatex', input, output))
+    end
+
+    -- Function to generate HTML with MathJax support
+    local function generate_html()
+      local input = vim.fn.shellescape(vim.fn.expand '%:p')
+      local output = vim.fn.shellescape(vim.fn.expand '%:p:r' .. '.html')
+      local mathjax_url = vim.fn.shellescape 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS_CHTML-full'
+      local title = vim.fn.shellescape(vim.fn.expand '%:t:r')
+      run_command(string.format('pandoc %s -o %s --mathjax=%s --standalone --metadata title=%s', input, output, mathjax_url, title))
+    end
+
+    -- Function to generate both PDF and HTML
+    local function generate_both()
+      generate_pdf()
+      generate_html()
+    end
 
     -- Set up keymaps for markdown files
     vim.api.nvim_create_autocmd('FileType', {
       pattern = 'markdown',
-      group = augroup,
       callback = function()
-        -- Map 'go' to run auto-pandoc
-        vim.keymap.set('n', 'go', function()
-          auto_pandoc.run_pandoc()
-        end, { buffer = true, desc = 'Run auto-pandoc' })
+        -- Map 'go' to run auto-pandoc (uses YAML frontmatter)
+        vim.keymap.set('n', 'go', auto_pandoc.run_pandoc, { buffer = true, desc = 'Run auto-pandoc' })
 
-        -- Map 'gO' (shift+g, shift+o) to run the custom pandoc command
-        vim.keymap.set('n', 'gO', function()
-          RunCustomPandoc()
-        end, { buffer = true, desc = 'Run custom pandoc command' })
+        -- Map 'gp' to generate PDF
+        vim.keymap.set('n', 'gp', generate_pdf, { buffer = true, desc = 'Generate PDF' })
+
+        -- Map 'gh' to generate HTML
+        vim.keymap.set('n', 'gh', generate_html, { buffer = true, desc = 'Generate HTML' })
+
+        -- Map 'gb' to generate both PDF and HTML
+        vim.keymap.set('n', 'gb', generate_both, { buffer = true, desc = 'Generate PDF and HTML' })
       end,
     })
   end,
