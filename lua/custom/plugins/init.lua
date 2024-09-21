@@ -36,5 +36,14 @@ return {
   },
 
   -- Vivify
-  { 'jannis-baum/vivify.vim' },
+  {
+    'jannis-baum/vivify.vim',
+    config = function()
+      -- Optional: Set configuration options here
+      vim.g.vivify_instant_refresh = 1
+      -- vim.g.vivify_filetypes = {'vimwiki'}  -- Uncomment if needed
+    end,
+    -- Optional: Specify when to load the plugin
+    event = 'VeryLazy', -- or another event that suits your workflow
+  },
 }

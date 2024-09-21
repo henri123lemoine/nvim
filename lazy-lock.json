@@ -34,5 +34,6 @@
   "todo-comments.nvim": { "branch": "main", "commit": "319c01b99b7a8c9ac2066bf0efd4d6ec68fef444" },
   "tokyonight.nvim": { "branch": "main", "commit": "4b386e66a9599057587c30538d5e6192e3d1c181" },
   "vim-sleuth": { "branch": "master", "commit": "cd9d382e33bb817abe7f10cdc3a606bf1d491d75" },
+  "vivify.vim": { "branch": "main", "commit": "822b527435781a82b47f056ae7edee83689e763c" },
   "which-key.nvim": { "branch": "main", "commit": "bfec3d6bc0a9b0b2cb11644642f78c2c3915eef0" }
 }
