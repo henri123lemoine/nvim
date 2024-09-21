@@ -1,6 +1,3 @@
--- You can add your own plugins here or in other files in this directory!
---  I promise not to create any merge conflicts in this directory :)
---
 -- See the kickstart.nvim README for more information
 return {
   -- markdown.nvim
@@ -38,13 +35,12 @@ return {
   -- Vivify
   {
     'jannis-baum/vivify.vim',
+    event = 'VeryLazy',
     config = function()
       -- Optional: Set configuration options here
       vim.g.vivify_instant_refresh = 1
-      -- vim.g.vivify_filetypes = {'vimwiki'}  -- Uncomment if needed
+      -- vim.g.vivify_filetypes = {'vimwiki'}
     end,
-    -- Optional: Specify when to load the plugin
-    event = 'VeryLazy', -- or another event that suits your workflow
   },
 
   -- Nvim Surround
