@@ -46,4 +46,16 @@ return {
     -- Optional: Specify when to load the plugin
     event = 'VeryLazy', -- or another event that suits your workflow
   },
+
+  -- Nvim Surround
+  {
+    'kylechui/nvim-surround',
+    version = '*',
+    event = 'VeryLazy',
+    config = function()
+      require('nvim-surround').setup {
+        -- use defaults
+      }
+    end,
+  },
 }
