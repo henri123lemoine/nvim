@@ -123,6 +123,25 @@ vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right win
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
+-- Enhanced buffer and tab navigation
+vim.keymap.set('n', '<Tab>', ':bnext<CR>', { desc = 'Next buffer', silent = true })
+vim.keymap.set('n', '<S-Tab>', ':bprev<CR>', { desc = 'Previous buffer', silent = true })
+vim.keymap.set('n', '<leader>bd', ':bdelete<CR>', { desc = 'Delete buffer', silent = true })
+vim.keymap.set('n', '<leader>ba', ':%bd|e#<CR>', { desc = 'Delete all buffers except current', silent = true })
+
+-- Tab management (actual vim tabs)
+vim.keymap.set('n', '<leader>tn', ':tabnew<CR>', { desc = 'New tab', silent = true })
+vim.keymap.set('n', '<leader>tc', ':tabclose<CR>', { desc = 'Close tab', silent = true })
+vim.keymap.set('n', '<leader>to', ':tabonly<CR>', { desc = 'Close all other tabs', silent = true })
+vim.keymap.set('n', '<A-1>', '1gt', { desc = 'Go to tab 1', silent = true })
+vim.keymap.set('n', '<A-2>', '2gt', { desc = 'Go to tab 2', silent = true })
+vim.keymap.set('n', '<A-3>', '3gt', { desc = 'Go to tab 3', silent = true })
+vim.keymap.set('n', '<A-4>', '4gt', { desc = 'Go to tab 4', silent = true })
+vim.keymap.set('n', '<A-5>', '5gt', { desc = 'Go to tab 5', silent = true })
+
+-- Quick file explorer toggle with better keybinding
+vim.keymap.set('n', '<leader>e', ':Neotree toggle<CR>', { desc = 'Toggle file explorer', silent = true })
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
@@ -247,7 +266,8 @@ require('lazy').setup({
         { '<leader>r', group = '[R]ename' },
         { '<leader>s', group = '[S]earch' },
         { '<leader>w', group = '[W]orkspace' },
-        { '<leader>t', group = '[T]oggle' },
+        { '<leader>t', group = '[T]abs/Toggle' },
+        { '<leader>b', group = '[B]uffers' },
         { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
       },
     },
